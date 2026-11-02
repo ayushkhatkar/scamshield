@@ -1,0 +1,16 @@
+# Copy this file to local.properties (it is git-ignored) and fill in your values.
+# Android Studio normally writes sdk.dir for you.
+sdk.dir=/path/to/Android/sdk
+
+# --- API keys (all optional; the app works on-device without them) ---
+
+# Google Safe Browsing Lookup API v4 key (free tier is for NON-commercial use;
+# for a paid app use the Web Risk API with the same request shape). Leave empty to skip.
+SAFE_BROWSING_API_KEY=
+
+# Have I Been Pwned API key (paid, ~US$3.50/month). Powers the Pro "Breach Monitor" feature.
+HIBP_API_KEY=
+
+# Your own ScamShield backend (scam-number feed, community reports, cloud AI analyzer).
+# Leave as-is until you deploy one; the app detects the placeholder and uses on-device logic only.
+SCAMSHIELD_API_BASE_URL=https://api.example.com/

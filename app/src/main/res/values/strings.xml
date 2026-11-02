@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScamShield</string>
+    <string name="process_text_label">Check with ScamShield</string>
+
+    <string name="channel_alerts">Scam alerts</string>
+    <string name="channel_alerts_desc">Blocked or suspicious calls and dangerous links</string>
+    <string name="channel_family">Family alerts</string>
+    <string name="channel_family_desc">Alerts from the phones you protect</string>
+    <string name="channel_audit">App audit</string>
+    <string name="channel_audit_desc">Risky apps found by the daily audit</string>
+
+    <string name="notif_call_blocked">Blocked scam call from %1$s</string>
+    <string name="notif_call_warning">Suspicious call from %1$s</string>
+    <string name="notif_app_risk">Dangerous app: %1$s</string>
+    <string name="notif_scan_danger">That looks like a scam</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scan history and the local blocklist stay on the device; nothing is backed up to the cloud. -->
+<full-backup-content>
+    <exclude domain="database" path="scamshield.db" />
+    <exclude domain="sharedpref" path="." />
+</full-backup-content>

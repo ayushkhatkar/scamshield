@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    // Anyone signed in (anonymously) can create a family; only members can read it.
+    match /families/{code} {
+      allow create: if signedIn();
+      allow read: if signedIn() && exists(/databases/$(database)/documents/families/$(code)/members/$(request.auth.uid));
+      allow update, delete: if false;
+
+      match /members/{uid} {
+        allow read: if signedIn() && exists(/databases/$(database)/documents/families/$(code)/members/$(request.auth.uid));
+        // A user may only write their own member document (joining needs the code = capability).
+        allow create, update, delete: if signedIn() && request.auth.uid == uid;
+      }
+
+      match /events/{eventId} {
+        allow read: if signedIn() && exists(/databases/$(database)/documents/families/$(code)/members/$(request.auth.uid));
+        allow create: if signedIn()
+          && exists(/databases/$(database)/documents/families/$(code)/members/$(request.auth.uid))
+          && request.resource.data.memberUid == request.auth.uid
+          && request.resource.data.detail.size() <= 500;
+        allow update, delete: if false;
+      }
+    }
+
+    // Community reports: write-only for users, aggregated by the Cloud Function.
+    match /reports/{reportId} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if false;
+    }
+
+    // Aggregated blocklist is public read, server-write only.
+    match /scam_numbers/{number} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
