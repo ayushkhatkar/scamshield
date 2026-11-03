@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to publish the APK as a Release asset
     steps:
       - name: Check out
         uses: actions/checkout@v4
@@ -39,9 +41,21 @@ jobs:
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
 
-      - name: Upload APK
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: scamshield-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+      # Publish a directly-installable .apk to the "latest" release (main only),
+      # so there is a permanent one-tap download link that needs no unzipping.
+      - name: Publish APK to "latest" release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest debug build
+          body: Debug APK built automatically from the latest commit on main.
+          files: app/build/outputs/apk/debug/*.apk
+          fail_on_unmatched_files: true
